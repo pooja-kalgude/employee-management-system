@@ -1,16 +1,24 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+
 const employeesRouter = require('./routes/employees');
 
 const app = express();
 
-app.use(cors({
+// CORS configuration
+const corsOptions = {
     origin: [
         'http://localhost:3000',
-        process.env.FRONTEND_URL
-    ].filter(Boolean)
-}));
+        'https://employee-management-frontend-lemon-three.vercel.app'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+// IMPORTANT: CORS must be registered before your routes
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.use('/api/employees', employeesRouter);
